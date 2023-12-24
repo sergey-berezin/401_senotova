@@ -4,16 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Task2A"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
     <Window.Resources>
         <CollectionViewSource x:Name="cvs" x:Key="cvs" Source="{Binding items}">
-
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription Direction="Ascending" PropertyName="Label"/>
+                <scm:SortDescription Direction="Descending" PropertyName="conf"/>
+            </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
         <DataTemplate x:Key="listTemplate">
             <StackPanel Margin="5" Orientation="Horizontal">
-                <Image Width="100" Height="75" Source="{Binding Path=ImagePath}" />
+                <Image Width="75" Height="75" Source="{Binding Path=DetectedImage}"/>
                 <StackPanel Margin="10" Orientation="Vertical">
                     <TextBlock FontSize="14" Text="Label: " HorizontalAlignment="Center"/>
                     <TextBlock FontSize="14" Text="{Binding Path=Label}" HorizontalAlignment="Center" />
@@ -31,6 +35,8 @@
                 CanExecute = "CorrectDirectoryName" Executed="FromDirectoryClick"/>
         <CommandBinding Command="{x:Static local:CustomCommands.CalculateCommand}"
                 CanExecute = "CorrectImagesDirectory" Executed="FromDirectoryExecute"/>
+        <!--<CommandBinding Command="{x:Static local:CustomCommands.StopCommand}"
+                CanExecute = "IsExecuting" Executed="StopExecuting"/>-->
     </Window.CommandBindings>
 
     <Grid>
@@ -41,34 +47,48 @@
         <StackPanel Grid.Column="0" Margin="10">
             <TextBlock Name="directory_declaration" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Center"
                        Height="20" FontSize="14" >
-                Выберете каталог с изображениями в формате .JPG            
+                Выберете каталог с изображениями в формате .jpg
             </TextBlock>
             <StackPanel Orientation="Horizontal">
                 <Button Content="Choose directory" Margin ="10, 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14"
                     Command="{x:Static local:CustomCommands.ChooseFromFileCommand}">
                 </Button>
-                <Button Content="Calculate" Margin ="0, 0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14"
+                <Button Content="Calculate" Margin ="10, 0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14"
                     Command="{x:Static local:CustomCommands.CalculateCommand}">
+                    <!--="{Binding ExecuteCommand}">-->
                 </Button>
-                <!--<Button Content="Calculate" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="14"
-                        Command="{Binding StartCommand}">
+                <!--<Button Content="Stop calculating" Margin ="10, 0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14"
+                    Command="{Binding StopExecCommand}">
                 </Button>-->
+                <!--<TextBox>
+                    <TextBox.Text>
+                        <Binding Path="testing_event" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>-->
             </StackPanel>
-            <ScrollViewer VerticalScrollBarVisibility="Visible">
-                <ListView Name="ListImages" ItemsSource="{Binding Source={StaticResource cvs}}" ItemTemplate="{StaticResource listTemplate}"
-                          SelectionChanged="usersList_SelectionChanged">
-                    <!--<ListView.ItemContainerStyle>
+            <!--<ScrollViewer VerticalScrollBarVisibility="Visible">
+                <ListView Name="ListImages" ItemsSource="{Binding Source={StaticResource cvs}}"
+            ScrollViewer.CanContentScroll="False">-->
+            <!--ItemTemplate="{StaticResource listTemplate}"
+                          SelectionChanged="usersList_SelectionChanged">-->
+            <!--<ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
                         </Style>
                     </ListView.ItemContainerStyle>-->
-                </ListView>
-            </ScrollViewer>
-            <!--<ListBox Grid.Row="0" Margin="10" Height ="330" Width="350" HorizontalAlignment="Center" ItemsSource="{Binding filenames}"/>-->
-            <!--ItemsSource="{Binding rawData_event.rawdata_collection}"-->
+            <!--</ListView>
+            </ScrollViewer>-->
+            <!--<ListView Name="bboxesListView" ItemsSource="{Binding Source={StaticResource cvs}}" ItemTemplate="{StaticResource segmented_image_key}"/>-->
+
+            <ListView Name="itemlist" Grid.Row="0" Margin="10" Height ="330" Width="350" HorizontalAlignment="Center" ItemsSource="{Binding items}"
+                      ItemTemplate="{StaticResource listTemplate}" SelectionChanged="listbox_SelectionChanged"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Margin="10">
-            <Image Name="Chosen" Grid.Column="1" Source="{ Binding Path=ChosenImage}"/>
+            <Image Name="Chosen" Grid.Column="1" Source="{ Binding ChosenImage.DetectedImage}"/>
         </StackPanel>
     </Grid>
 </Window>
