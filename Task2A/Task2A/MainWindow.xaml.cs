@@ -28,6 +28,8 @@ using System.Reflection.Metadata;
 using System.Data.Common;
 using System.Threading;
 using System.Xml.Linq;
+using System.ComponentModel;
+//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Task2A
 {
@@ -137,17 +139,41 @@ namespace Task2A
             //System.Windows.MessageBox.Show("have items");
             await viewData.PredictForImages();
             //System.Windows.MessageBox.Show(viewData.items.Count.ToString());
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(itemlist.ItemsSource);
+            view.SortDescriptions.Add(new SortDescription("Label", ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription("conf", ListSortDirection.Descending));
             //viewData.ChosenImage = (ListData)itemlist.SelectedItem;
             this.DataContext = null;
             this.DataContext = viewData;
         }
-        private void listbox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /*private void listbox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            viewData.ChosenImage = (ListData)itemlist.SelectedItem;
+            var temp = (ListData)itemlist.SelectedItem;
+            Chosen.
+            viewData.ChosenImage = temp.DetectedImage;
             this.DataContext = null;
             this.DataContext = viewData;
-        }
+        }*/
 
+        private void itemlist_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //var temp = (ListData)itemlist.SelectedItem;
+            //var name = (itemlist.SelectedItem as ListData).Label;
+            //viewData.testing = name;// temp.Label;
+            //viewData.ChosenImage = name;// temp.DetectedImage;
+            var j = itemlist.SelectedIndex;
+            if (j != -1)
+            {
+                if (sender is System.Windows.Controls.ListBox lb &&
+                    lb.Items[j] is ListData dm)
+                {
+                    var item = dm.DetectedImage;
+                    Chosen.Source = item;
+                }       
+            }
+            else
+                Chosen.Source = null;    
+        }
 
         //    //if (!isExecuting)
         //    //{

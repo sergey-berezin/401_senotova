@@ -10,10 +10,10 @@
 
     <Window.Resources>
         <CollectionViewSource x:Name="cvs" x:Key="cvs" Source="{Binding items}">
-            <CollectionViewSource.SortDescriptions>
+            <!--<CollectionViewSource.SortDescriptions>
                 <scm:SortDescription Direction="Ascending" PropertyName="Label"/>
                 <scm:SortDescription Direction="Descending" PropertyName="conf"/>
-            </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource.SortDescriptions>-->
         </CollectionViewSource>
         <DataTemplate x:Key="listTemplate">
             <StackPanel Margin="5" Orientation="Horizontal">
@@ -60,7 +60,7 @@
                 <!--<Button Content="Stop calculating" Margin ="10, 0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14"
                     Command="{Binding StopExecCommand}">
                 </Button>-->
-                <!--<TextBox>
+                <TextBox>
                     <TextBox.Text>
                         <Binding Path="testing_event" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
@@ -68,7 +68,7 @@
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
-                </TextBox>-->
+                </TextBox>
             </StackPanel>
             <!--<ScrollViewer VerticalScrollBarVisibility="Visible">
                 <ListView Name="ListImages" ItemsSource="{Binding Source={StaticResource cvs}}"
@@ -84,11 +84,11 @@
             </ScrollViewer>-->
             <!--<ListView Name="bboxesListView" ItemsSource="{Binding Source={StaticResource cvs}}" ItemTemplate="{StaticResource segmented_image_key}"/>-->
 
-            <ListView Name="itemlist" Grid.Row="0" Margin="10" Height ="330" Width="350" HorizontalAlignment="Center" ItemsSource="{Binding items}"
-                      ItemTemplate="{StaticResource listTemplate}" SelectionChanged="listbox_SelectionChanged"/>
+            <ListBox Name="itemlist" Grid.Row="0" Margin="10" Height ="330" Width="350" HorizontalAlignment="Center" ItemsSource="{Binding items}"
+                      ItemTemplate="{StaticResource listTemplate}" SelectionChanged="itemlist_SelectionChanged"/> <!--SelectionChanged="listbox_SelectionChanged"/>-->
         </StackPanel>
         <StackPanel Grid.Column="1" Margin="10">
-            <Image Name="Chosen" Grid.Column="1" Source="{ Binding ChosenImage.DetectedImage}"/>
+            <Image Name="Chosen" Grid.Column="1" />
         </StackPanel>
     </Grid>
 </Window>
